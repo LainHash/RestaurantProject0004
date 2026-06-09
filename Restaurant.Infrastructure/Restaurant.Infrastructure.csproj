@@ -21,4 +21,11 @@
     <ProjectReference Include="..\Restaurant.Domain\Restaurant.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Identity\" />
+    <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Persistence\Data\" />
+    <Folder Include="Persistence\Repositories\Catalog\" />
+  </ItemGroup>
+
 </Project>
