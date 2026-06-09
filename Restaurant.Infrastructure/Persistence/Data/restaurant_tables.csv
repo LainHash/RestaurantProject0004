@@ -1,0 +1,11 @@
+Id,TableNumber,FloorNumber,Capacity,Status,Description,CreatedAt,UpdatedAt,IsDeleted,DeletedAt
+1,1,1,4,Available,Bàn cạnh cửa sổ tầng 1,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+2,2,1,4,Available,Bàn trung tâm tầng 1,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+3,3,1,6,Available,Bàn gia đình tầng 1,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+4,4,1,2,Available,Bàn cặp đôi tầng 1,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+5,5,1,8,Available,Bàn tiệc nhỏ tầng 1,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+6,1,2,4,Available,Bàn cạnh cửa sổ tầng 2,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+7,2,2,6,Available,Bàn trung tâm tầng 2,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+8,3,2,4,Available,Bàn ban công tầng 2,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+9,4,2,10,Available,Phòng riêng tầng 2,2024-01-01 00:00:00,2024-01-01 00:00:00,false,
+10,5,2,2,Maintenance,Đang bảo trì tầng 2,2024-01-01 00:00:00,2024-01-01 00:00:00,false,

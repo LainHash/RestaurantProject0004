@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -24,8 +24,13 @@
   <ItemGroup>
     <Folder Include="Identity\" />
     <Folder Include="Persistence\Migrations\" />
-    <Folder Include="Persistence\Data\" />
-    <Folder Include="Persistence\Repositories\Catalog\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy CSV seed data files to output directory -->
+    <None Update="Persistence\Data\*.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
