@@ -14,8 +14,9 @@ namespace Restaurant.Application.Features.Catalog.Categories.Queries.GetAll
         }
         public async Task<Result<List<CategoryDTO>>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            var result = await _categoryRepository.GetAllAsync(cancellationToken);
-            return result;
+            var response = await _categoryRepository
+                .GetAllAsync(cancellationToken);
+            return response;
         }
     }
 }

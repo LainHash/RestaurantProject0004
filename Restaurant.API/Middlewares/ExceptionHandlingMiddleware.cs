@@ -38,9 +38,11 @@ public class ExceptionHandlingMiddleware
 
         switch (exception)
         {
-            case ValidationException validationException:
+            case Restaurant.Application.Common.Exceptions.ValidationException validationException:
                 statusCode = HttpStatusCode.BadRequest;
-                message = "Validation failed: " + string.Join(", ", validationException.Errors.Select(e => e.ErrorMessage));
+                var errorMessages = validationException.Errors
+                    .SelectMany(kvp => kvp.Value.Select(err => $"{kvp.Key}: {err}"));
+                message = "Validation failed: " + string.Join(" | ", errorMessages);
                 break;
             case KeyNotFoundException _:
                 // case NotFoundException _: // Add custom NotFoundException if exists

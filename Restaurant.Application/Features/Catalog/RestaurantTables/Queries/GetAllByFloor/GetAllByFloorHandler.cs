@@ -20,8 +20,9 @@ namespace Restaurant.Application.Features.Catalog.RestaurantTables.Queries.GetAl
 
         public async Task<Result<List<RestaurantTableDTO>>> Handle(GetAllByFloorQuery request, CancellationToken cancellationToken)
         {
-            var result = await _restaurantTableRepository.GetAllByFloorAsync(request.Floor, cancellationToken);
-            return result;
+            var response = await _restaurantTableRepository
+                .GetAllByFloorAsync(request.Floor, cancellationToken);
+            return response;
         }
     }
 }

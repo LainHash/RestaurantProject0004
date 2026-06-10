@@ -14,8 +14,9 @@ namespace Restaurant.Application.Features.Catalog.RestaurantTables.Queries.GetAl
         }
         public async Task<Result<List<RestaurantTableDTO>>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
-            var result = await _restaurantTableRepository.GetAllAsync(cancellationToken);
-            return result;
+            var response = await _restaurantTableRepository
+                .GetAllAsync(cancellationToken);
+            return response;
         }
     }
 }

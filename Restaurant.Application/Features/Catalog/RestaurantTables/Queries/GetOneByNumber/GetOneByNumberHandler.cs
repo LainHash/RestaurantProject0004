@@ -15,8 +15,9 @@ namespace Restaurant.Application.Features.Catalog.RestaurantTables.Queries.GetOn
 
         public async Task<Result<RestaurantTableDTO>> Handle(GetOneByNumberQuery request, CancellationToken cancellationToken)
         {
-            var result = await _restaurantTableRepository.GetOneByNumberAsync(request.Floor, request.Number, cancellationToken);
-            return result;
+            var response = await _restaurantTableRepository
+                .GetOneByNumberAsync(request.Floor, request.Number, cancellationToken);
+            return response;
         }
     }
 }
