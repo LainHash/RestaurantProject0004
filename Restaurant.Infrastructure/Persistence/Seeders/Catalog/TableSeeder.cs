@@ -3,22 +3,16 @@ using CsvHelper.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Domain.Entities.Catalog;
 using Restaurant.Infrastructure.Persistence;
+using Restaurant.Infrastructure.Persistence.Seed;
 using System.Globalization;
 
 namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
 {
-    internal class TableSeeder
+    internal class TableSeeder : IDataSeeder
     {
-        private readonly RestaurantDbContext _context;
-
-        public TableSeeder(RestaurantDbContext context)
+        public async Task SeedAsync(RestaurantDbContext context)
         {
-            _context = context;
-        }
-
-        public async Task SeedAsync()
-        {
-            if (await _context.RestaurantTables.AnyAsync())
+            if (await context.RestaurantTables.AnyAsync())
                 return;
 
             var csvPath = Path.Combine(
@@ -37,14 +31,14 @@ namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
 
             var records = csv.GetRecords<TableCsvRecord>().ToList();
 
-            var strategy = _context.Database.CreateExecutionStrategy();
+            var strategy = context.Database.CreateExecutionStrategy();
             await strategy.ExecuteAsync(async () =>
             {
-                using var transaction = await _context.Database.BeginTransactionAsync();
+                using var transaction = await context.Database.BeginTransactionAsync();
 
                 foreach (var record in records)
                 {
-                    _context.RestaurantTables.Add(new RestaurantTable
+                    context.RestaurantTables.Add(new RestaurantTable
                     {
                         Id = record.Id,
                         TableNumber = record.TableNumber,
@@ -56,9 +50,9 @@ namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
                     });
                 }
 
-                await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables ON");
-                await _context.SaveChangesAsync();
-                await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables OFF");
+                await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables ON");
+                await context.SaveChangesAsync();
+                await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables OFF");
 
                 await transaction.CommitAsync();
             });

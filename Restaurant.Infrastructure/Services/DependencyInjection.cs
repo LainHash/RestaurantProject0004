@@ -6,6 +6,7 @@ using Restaurant.Infrastructure.Persistence;
 using Restaurant.Infrastructure.Persistence.Repositories.Catalog;
 using Restaurant.Infrastructure.Persistence.Seeders;
 using Restaurant.Infrastructure.Persistence.Seeders.Catalog;
+using Restaurant.Infrastructure.Persistence.Seeders.Inventory;
 
 namespace Restaurant.Infrastructure.Services
 {
@@ -25,6 +26,8 @@ namespace Restaurant.Infrastructure.Services
             // ── Seeders ──────────────────────────────────────────────────────
             services.AddScoped<CategorySeeder>();
             services.AddScoped<TableSeeder>();
+            services.AddScoped<ProductSeeder>();
+            services.AddScoped<ProductStockSeeder>();
             services.AddScoped<DatabaseSeeder>();
 
             // ── Repositories ─────────────────────────────────────────────────

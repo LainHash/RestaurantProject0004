@@ -1,23 +1,23 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Restaurant.Domain.Entities.Catalog;
+using Restaurant.Domain.Entities.Inventory;
 using Restaurant.Infrastructure.Persistence;
 using Restaurant.Infrastructure.Persistence.Seed;
 using System.Globalization;
 
-namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
+namespace Restaurant.Infrastructure.Persistence.Seeders.Inventory
 {
-    internal class CategorySeeder : IDataSeeder
+    internal class ProductStockSeeder : IDataSeeder
     {
         public async Task SeedAsync(RestaurantDbContext context)
         {
-            if (await context.Categories.AnyAsync())
+            if (await context.ProductStocks.AnyAsync())
                 return;
 
             var csvPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
-                "Persistence", "Data", "categories.csv");
+                "Persistence", "Data", "product_stocks.csv");
 
             if (!File.Exists(csvPath))
                 throw new FileNotFoundException($"Seed data file not found: {csvPath}");
@@ -29,7 +29,7 @@ namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
                 MissingFieldFound = null,
             });
 
-            var records = csv.GetRecords<CategoryCsvRecord>().ToList();
+            var records = csv.GetRecords<ProductStockCsvRecord>().ToList();
 
             var strategy = context.Database.CreateExecutionStrategy();
             await strategy.ExecuteAsync(async () =>
@@ -38,27 +38,31 @@ namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
 
                 foreach (var record in records)
                 {
-                    context.Categories.Add(new Category
+                    context.ProductStocks.Add(new ProductStock
                     {
                         Id = record.Id,
-                        Name = record.Name,
-                        Description = record.Description ?? string.Empty,
+                        ProductId = record.ProductId,
+                        Price = record.Price,
+                        Unit = record.Unit,
+                        Quantity = record.Quantity,
                     });
                 }
 
-                await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Categories ON");
+                await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT ProductStocks ON");
                 await context.SaveChangesAsync();
-                await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Categories OFF");
+                await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT ProductStocks OFF");
 
                 await transaction.CommitAsync();
             });
         }
 
-        private class CategoryCsvRecord
+        private class ProductStockCsvRecord
         {
             public int Id { get; set; }
-            public string Name { get; set; } = string.Empty;
-            public string? Description { get; set; }
+            public int ProductId { get; set; }
+            public decimal Price { get; set; }
+            public string Unit { get; set; } = string.Empty;
+            public decimal Quantity { get; set; }
         }
     }
 }

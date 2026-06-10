@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Identity\" />
+    <Folder Include="Persistence\Repositories\Inventory\" />
   </ItemGroup>
 
   <ItemGroup>

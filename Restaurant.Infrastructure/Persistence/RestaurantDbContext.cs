@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Domain.Entities.Catalog;
+using Restaurant.Domain.Entities.Inventory;
 using System.Reflection;
 
 namespace Restaurant.Infrastructure.Persistence
@@ -14,6 +15,8 @@ namespace Restaurant.Infrastructure.Persistence
         // ── DbSets ──────────────────────────────────────────────────────────
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<RestaurantTable> RestaurantTables { get; set; } = null!;
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<ProductStock> ProductStocks { get; set; } = null!;
 
         // ── Model building ──────────────────────────────────────────────────
         protected override void OnModelCreating(ModelBuilder modelBuilder)

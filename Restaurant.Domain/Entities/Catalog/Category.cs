@@ -6,5 +6,7 @@ namespace Restaurant.Domain.Entities.Catalog
     {
         public string Name { get; set; } = null!;
         public string? Description { get; set; } = string.Empty;
+
+        public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
     }
 }
