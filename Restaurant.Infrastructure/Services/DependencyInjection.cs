@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurant.Application.Interfaces.Repositories.Catalog;
 using Restaurant.Infrastructure.Persistence;
+using Restaurant.Infrastructure.Persistence.Repositories.Catalog;
 using Restaurant.Infrastructure.Persistence.Seeders;
 using Restaurant.Infrastructure.Persistence.Seeders.Catalog;
 
@@ -24,6 +26,9 @@ namespace Restaurant.Infrastructure.Services
             services.AddScoped<CategorySeeder>();
             services.AddScoped<TableSeeder>();
             services.AddScoped<DatabaseSeeder>();
+
+            // ── Repositories ─────────────────────────────────────────────────
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             return services;
         }
