@@ -5,14 +5,14 @@ using Restaurant.Application.Interfaces.Repositories.Catalog;
 
 namespace Restaurant.Application.Features.Catalog.RestaurantTables.Queries.GetAll
 {
-    public class Handler : IRequestHandler<Query, Result<List<RestaurantTableDTO>>>
+    public class GetAllHandler : IRequestHandler<GetAllQuery, Result<List<RestaurantTableDTO>>>
     {
         private readonly IRestaurantTableRepository _restaurantTableRepository;
-        public Handler(IRestaurantTableRepository restaurantTableRepository)
+        public GetAllHandler(IRestaurantTableRepository restaurantTableRepository)
         {
             _restaurantTableRepository = restaurantTableRepository;
         }
-        public async Task<Result<List<RestaurantTableDTO>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<RestaurantTableDTO>>> Handle(GetAllQuery request, CancellationToken cancellationToken)
         {
             var result = await _restaurantTableRepository.GetAllAsync(cancellationToken);
             return result;

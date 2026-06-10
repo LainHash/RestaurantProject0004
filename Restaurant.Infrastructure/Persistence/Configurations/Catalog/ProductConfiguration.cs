@@ -31,6 +31,9 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Catalog
                 .IsRequired()
                 .HasDefaultValue(true);
 
+            builder.Property(p => p.IsMadeToOrder)
+                .IsRequired();
+
             builder.Property(p => p.CategoryId)
                 .IsRequired();
 
@@ -61,7 +64,7 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Catalog
 
             // Many-to-one: Product → Category
             builder.HasOne(p => p.Category)
-                .WithMany()
+                .WithMany(c => c.Products)
                 .HasForeignKey(p => p.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -33,6 +33,7 @@ namespace Restaurant.Infrastructure.Services
             // ── Repositories ─────────────────────────────────────────────────
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IRestaurantTableRepository, RestaurantTableRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             return services;
         }

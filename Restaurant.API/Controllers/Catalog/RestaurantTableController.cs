@@ -16,9 +16,9 @@ namespace Restaurant.API.Controllers.Catalog
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() 
+        public async Task<IActionResult> GetAll() 
         {
-            var result = await _mediator.Send(new Query());
+            var result = await _mediator.Send(new GetAllQuery());
             return StatusCode(result.StatusCode, result);
         }
     }

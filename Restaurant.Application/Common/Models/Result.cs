@@ -35,6 +35,15 @@ namespace Restaurant.Application.Common.Models
             };
         }
 
-
+        public static new Result<T> Fail(string? message, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
+        {
+            return new Result<T>
+            {
+                IsSuccess = false,
+                Message = message,
+                Data = default,
+                StatusCode = (int)statusCode
+            };
+        }
     }
 }

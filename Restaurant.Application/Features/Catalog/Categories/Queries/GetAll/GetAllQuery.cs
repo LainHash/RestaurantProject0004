@@ -4,7 +4,7 @@ using Restaurant.Application.Features.Catalog.Categories.DTOs;
 
 namespace Restaurant.Application.Features.Catalog.Categories.Queries.GetAll
 {
-    public class Query : IRequest<Result<List<CategoryDTO>>>
+    public class GetAllQuery : IRequest<Result<List<CategoryDTO>>>
     {
     }
 }
