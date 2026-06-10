@@ -24,7 +24,7 @@ namespace Restaurant.API.Controllers.Catalog
         }
 
         [HttpGet("id")]
-        public async Task<IActionResult> GetOne(Guid id)
+        public async Task<IActionResult> GetOne([FromRoute] Guid id)
         {
             var result = await _mediator.Send(new GetOneQuery(id));
             return StatusCode(result.StatusCode, result);

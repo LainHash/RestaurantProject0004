@@ -13,7 +13,8 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
         {
             _context = context;
         }
-        public async Task<Result<List<ProductDTO>>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<Result<List<ProductDTO>>> 
+            GetAllAsync(CancellationToken cancellationToken)
         {
             var products = await _context.Products
                 .Include(p => p.Category)
@@ -37,7 +38,8 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                 .Success(products, "Lấy danh sách Sản phẩm thành công.", HttpStatusCode.OK);
         }
 
-        public async Task<Result<ProductDTO>> GetByPublicIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Result<ProductDTO>> 
+            GetOneByPublicIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var product = await _context.Products
                 .Include(p => p.Category)

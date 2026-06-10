@@ -2,6 +2,7 @@
 using Restaurant.Application.Common.Models;
 using Restaurant.Application.Features.Catalog.RestaurantTables.DTOs;
 using Restaurant.Application.Interfaces.Repositories.Catalog;
+using System.Net;
 
 namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
 {
@@ -12,7 +13,9 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
         {
             _context = context;
         }
-        public async Task<Result<List<RestaurantTableDTO>>> GetAllAsync(CancellationToken cancellationToken)
+
+        public async Task<Result<List<RestaurantTableDTO>>> 
+            GetAllAsync(CancellationToken cancellationToken)
         {
             var tables = await _context.RestaurantTables
                 .Select(t => new RestaurantTableDTO
@@ -25,7 +28,54 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                     Description = t.Description ?? string.Empty,
                 })
                 .ToListAsync(cancellationToken);
-            return Result<List<RestaurantTableDTO>>.Success(tables, "Lấy danh sách Bàn thành công.");
+            return Result<List<RestaurantTableDTO>>
+                .Success(tables, "Lấy danh sách Bàn thành công.");
+        }
+
+        public async Task<Result<List<RestaurantTableDTO>>> 
+            GetAllByFloorAsync(int floor, CancellationToken cancellationToken)
+        {
+            var tables = await _context.RestaurantTables
+                .Where(t => t.FloorNumber == floor)
+                .Select(t => new RestaurantTableDTO
+                {
+                    TableNumber = t.TableNumber,
+                    FloorNumber = t.FloorNumber,
+                    Shape = t.Shape,
+                    Capacity = t.Capacity,
+                    Status = t.Status,
+                    Description = t.Description ?? string.Empty,
+                })
+                .ToListAsync(cancellationToken);
+
+            return Result<List<RestaurantTableDTO>>
+                .Success(tables, "Lấy danh sách Bàn theo Tầng thành công.");
+        }
+
+        public async Task<Result<RestaurantTableDTO>> 
+            GetOneByNumberAsync(int floor, int number, CancellationToken cancellationToken)
+        {
+            var table = await _context.RestaurantTables
+                .Where(t => t.FloorNumber == floor && t.TableNumber == number)
+                .Select(t => new RestaurantTableDTO
+                {
+                    TableNumber = t.TableNumber,
+                    FloorNumber = t.FloorNumber,
+                    Shape = t.Shape,
+                    Capacity = t.Capacity,
+                    Status = t.Status,
+                    Description = t.Description ?? string.Empty,
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if(table == null)
+            {
+                return Result<RestaurantTableDTO>
+                    .Fail("Bàn không tồn tại", HttpStatusCode.NotFound);
+            }
+
+            return Result<RestaurantTableDTO>
+                .Success(table, "Lấy bàn theo Số thành công.");
         }
     }
 }

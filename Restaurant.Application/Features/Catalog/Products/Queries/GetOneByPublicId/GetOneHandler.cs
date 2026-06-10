@@ -15,7 +15,7 @@ namespace Restaurant.Application.Features.Catalog.Products.Queries.GetByPublicId
 
         public async Task<Result<ProductDTO>> Handle(GetOneQuery request, CancellationToken cancellationToken)
         {
-            var result = await _productRepository.GetByPublicIdAsync(request.Id, cancellationToken);
+            var result = await _productRepository.GetOneByPublicIdAsync(request.Id, cancellationToken);
             return result;
         }
     }

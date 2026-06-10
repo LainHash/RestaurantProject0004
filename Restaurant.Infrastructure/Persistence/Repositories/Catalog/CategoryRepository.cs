@@ -13,7 +13,8 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
         {
             _context = context;
         }
-        public async Task<Result<List<CategoryDTO>>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<Result<List<CategoryDTO>>> 
+            GetAllAsync(CancellationToken cancellationToken)
         {
             var categories = await _context.Categories
                 .Select(c => new CategoryDTO
