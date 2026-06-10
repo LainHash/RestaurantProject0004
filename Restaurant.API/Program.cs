@@ -23,6 +23,9 @@ var app = builder.Build();
 await app.Services.InitialiseDatabaseAsync();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<Restaurant.API.Middleware.ExceptionHandlingMiddleware>();
+
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

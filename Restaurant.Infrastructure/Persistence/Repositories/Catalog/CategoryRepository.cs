@@ -23,7 +23,7 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                 })
                 .ToListAsync(cancellationToken);
             return Result<List<CategoryDTO>>
-                .Success(categories, "Categories", HttpStatusCode.OK);
+                .Success(categories, "Lấy danh sách Danh mục thành công.");
         }
     }
 }
