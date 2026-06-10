@@ -1,4 +1,5 @@
 <Solution>
+  <Folder Name="/Solution Items/" />
   <Project Path="Restaurant.API/Restaurant.API.csproj" />
   <Project Path="Restaurant.Application/Restaurant.Application.csproj" />
   <Project Path="Restaurant.Blazor/Restaurant.Blazor.csproj" />

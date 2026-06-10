@@ -16,4 +16,15 @@
     <ProjectReference Include="..\Restaurant.Domain\Restaurant.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Behaviors\" />
+    <Folder Include="Common\Constants\" />
+    <Folder Include="Common\Enums\" />
+    <Folder Include="Features\Catalog\Categories\Commands\" />
+    <Folder Include="Features\Catalog\Categories\Handlers\" />
+    <Folder Include="Features\Catalog\Products\Commands\" />
+    <Folder Include="Features\Catalog\RestaurantTables\Commands\" />
+    <Folder Include="Interfaces\Services\" />
+  </ItemGroup>
+
 </Project>

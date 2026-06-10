@@ -1,0 +1,31 @@
+﻿Id,Name,Description,IsAvailable,CategoryId,IsMadeToOrder
+1,Phở Bò,Phở bò truyền thống nấu từ xương bò hầm 12 tiếng với các loại gia vị đặc trưng,TRUE,2,TRUE
+2,Phở Gà,Phở gà nước trong thanh ngọt với thịt gà ta tươi ngon,TRUE,2,TRUE
+3,Bún Bò Huế,Bún bò Huế cay nồng đặc trưng miền Trung với chả cua và giò heo,TRUE,2,TRUE
+4,Bún Riêu,Bún riêu cua đồng nấu cà chua thơm ngon,TRUE,2,TRUE
+5,Cơm Tấm Sườn Bì Chả,Cơm tấm sườn bì chả đặc sản Sài Gòn,TRUE,2,TRUE
+6,Canh Chua Cá,Cá nấu canh chua kiểu miền Nam với me và rau thơm,TRUE,2,TRUE
+7,Gà Rang Muối,Gà rang muối giòn tan vàng đẹp,TRUE,2,TRUE
+8,Bò Lúc Lắc,Bò lúc lắc xào bơ tỏi mềm ngon,TRUE,2,TRUE
+9,Sườn Xào Chua Ngọt,Sườn xào chua ngọt kiểu Việt,TRUE,2,TRUE
+10,Cá Chiên Sốt Cà Chua,Cá chiên sốt cà chua đậm đà,TRUE,2,TRUE
+11,Chả Giò,Chả giò nhân thịt tôm giòn rụm,TRUE,1,FALSE
+12,Gói Cuốn,Gỏi cuốn tôm thịt tươi mát với rau sống,TRUE,1,TRUE
+13,Bánh Mì Thịt,Bánh mì thịt nguội pâté trứng,TRUE,1,TRUE
+14,Nem Nướng,Nem nướng cuộn rau sống chấm mắm nêm,TRUE,1,TRUE
+15,Bánh Bao,Bánh bao nhân thịt trứng,TRUE,1,TRUE
+16,Sinh Tố Bơ,Sinh tố bơ béo ngậy kem sữa,TRUE,4,TRUE
+17,Sinh Tố Xoài,Sinh tố xoài thơm ngon vị nhiệt đới,TRUE,4,TRUE
+18,Trà Sữa Trân Châu,Trà sữa trân châu đen đường nâu,TRUE,4,TRUE
+19,Nước Cam Ép,Nước cam ép nguyên chất tươi mát,TRUE,4,TRUE
+20,Cà Phê Sữa Đá,Cà phê sữa đá truyền thống Việt Nam,TRUE,4,TRUE
+21,Bia Larue,Bia Larue lon 330ml mát lạnh,TRUE,6,FALSE
+22,Bia Tiger,Bia Tiger lon 330ml,TRUE,6,FALSE
+23,Rượu Vang Đỏ,Rượu vang đỏ nhập khẩu,TRUE,6,FALSE
+24,Bánh Flan,Bánh flan caramel mềm mịn,TRUE,3,FALSE
+25,Chè Ba Màu,Chè ba màu đặc sản Nam Bộ,TRUE,3,TRUE
+26,Bánh Tart Trứng,Bánh tart trứng vỏ giòn nhân mềm,TRUE,3,TRUE
+27,Sữa Chua Dẻo,Sữa chua dẻo mát lạnh thơm ngon,TRUE,3,FALSE
+28,Rau Muống Xào Tỏi,Rau muống xào tỏi giòn thơm,TRUE,5,TRUE
+29,Đậu Hũ Sốt Cà,Đậu hũ sốt cà chua chay thanh đạm,TRUE,5,TRUE
+30,Canh Khổ Qua Chay,Canh khổ qua chay nhồi nấm đông cô,TRUE,5,TRUE
