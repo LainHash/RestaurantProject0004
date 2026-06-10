@@ -39,9 +39,11 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Catalog
                 .HasDefaultValue(string.Empty);
 
             builder.Property(t => t.CreatedAt)
+                .HasDefaultValueSql("sysdatetime()")
                 .IsRequired();
 
             builder.Property(t => t.UpdatedAt)
+                .HasDefaultValueSql("sysdatetime()")
                 .IsRequired();
 
             builder.Property(t => t.IsDeleted)

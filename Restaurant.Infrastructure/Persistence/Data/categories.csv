@@ -1,9 +1,9 @@
-﻿Id,Name,Description,,
-1,Appetizer,Các món ăn nhẹ và khai vị đầu bữa,,
-2,Main Course,Các món ăn chính phong phú và đa dạng,,
-3,Desserts,Các loại bánh ngọt và tráng miệng sau bữa ăn,,
-4,Soft Drinks,Nước giải khát và thức uống các loại,,
-5,Vegetarians,Thực đơn ăn chay tốt cho sức khỏe,,
-6,Alcohol,,,
-7,Coffee,,,
-9,Side Dishes,,,
+﻿Id,Name,Description
+1,Appetizer,Các món ăn nhẹ và khai vị đầu bữa
+2,Main Course,Các món ăn chính phong phú và đa dạng
+3,Desserts,Các loại bánh ngọt và tráng miệng sau bữa ăn
+4,Soft Drinks,Nước giải khát và thức uống các loại
+5,Vegetarians,Thực đơn ăn chay tốt cho sức khỏe
+6,Alcohol,
+7,Coffee,
+9,Side Dishes,

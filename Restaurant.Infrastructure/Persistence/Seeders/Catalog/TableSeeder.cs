@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Restaurant.Domain.Entities.Catalog;
 using Restaurant.Infrastructure.Persistence;
 using System.Globalization;
-using Microsoft.Data.SqlClient;
 
 namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
 {
@@ -29,22 +28,51 @@ namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
             if (!File.Exists(csvPath))
                 throw new FileNotFoundException($"Seed data file not found: {csvPath}");
 
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            using var reader = new StreamReader(csvPath);
+            using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 HasHeaderRecord = true,
                 MissingFieldFound = null,
-            };
+            });
 
-            using var reader = new StreamReader(csvPath);
-            using var csv = new CsvReader(reader, config);
+            var records = csv.GetRecords<TableCsvRecord>().ToList();
 
-            var tables = csv.GetRecords<RestaurantTable>().ToList();
+            var strategy = _context.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
+            {
+                using var transaction = await _context.Database.BeginTransactionAsync();
 
-            await _context.RestaurantTables.AddRangeAsync(tables);
+                foreach (var record in records)
+                {
+                    _context.RestaurantTables.Add(new RestaurantTable
+                    {
+                        Id = record.Id,
+                        TableNumber = record.TableNumber,
+                        FloorNumber = record.FloorNumber,
+                        Shape = record.Shape,
+                        Capacity = record.Capacity,
+                        Status = record.Status,
+                        Description = record.Description ?? string.Empty,
+                    });
+                }
 
-            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables ON");
-            await _context.SaveChangesAsync();
-            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables OFF");
+                await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables ON");
+                await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables OFF");
+
+                await transaction.CommitAsync();
+            });
+        }
+
+        private class TableCsvRecord
+        {
+            public int Id { get; set; }
+            public int TableNumber { get; set; }
+            public int FloorNumber { get; set; }
+            public string Shape { get; set; } = string.Empty;
+            public int Capacity { get; set; }
+            public string Status { get; set; } = string.Empty;
+            public string? Description { get; set; }
         }
     }
 }
