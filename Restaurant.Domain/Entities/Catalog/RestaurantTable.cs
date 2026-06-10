@@ -9,6 +9,6 @@ namespace Restaurant.Domain.Entities.Catalog
         public int Capacity { get; set; }
         public string Shape { get; set; } = null!;
         public string Status { get; set; } = null!;
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
     }
 }

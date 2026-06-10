@@ -18,12 +18,11 @@
 
   <ItemGroup>
     <Folder Include="Behaviors\" />
-    <Folder Include="Common\Models\" />
     <Folder Include="Common\Constants\" />
     <Folder Include="Common\Enums\" />
-    <Folder Include="Features\" />
+    <Folder Include="Features\Catalog\Categories\Commands\" />
+    <Folder Include="Features\Catalog\Categories\Handlers\" />
     <Folder Include="Interfaces\Services\" />
-    <Folder Include="Interfaces\Repositories\" />
   </ItemGroup>
 
 </Project>
