@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Restaurant.Domain.Entities.Catalog;
 using Restaurant.Infrastructure.Persistence;
 using System.Globalization;
+using Microsoft.Data.SqlClient;
 
 namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
 {
@@ -40,7 +41,10 @@ namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
             var tables = csv.GetRecords<RestaurantTable>().ToList();
 
             await _context.RestaurantTables.AddRangeAsync(tables);
+
+            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables ON");
             await _context.SaveChangesAsync();
+            await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT RestaurantTables OFF");
         }
     }
 }

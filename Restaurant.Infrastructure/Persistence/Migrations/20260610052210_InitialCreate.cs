@@ -38,6 +38,7 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
                     TableNumber = table.Column<int>(type: "int", nullable: false),
                     FloorNumber = table.Column<int>(type: "int", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
+                    Shape = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false, defaultValue: "Available"),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false, defaultValue: ""),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),

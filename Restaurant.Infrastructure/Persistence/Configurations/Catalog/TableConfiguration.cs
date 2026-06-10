@@ -13,6 +13,9 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Catalog
 
             builder.HasKey(t => t.Id);
 
+            builder.Property(c => c.Id)
+                .UseIdentityColumn();
+
             builder.Property(t => t.TableNumber)
                 .IsRequired();
 
