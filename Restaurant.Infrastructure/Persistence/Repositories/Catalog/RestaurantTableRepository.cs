@@ -72,7 +72,6 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                 request.FloorNumber,
                 request.Capacity,
                 request.Shape,
-                request.Status,
                 request.Description);
 
             await _context.RestaurantTables.AddAsync(table, cancellationToken);

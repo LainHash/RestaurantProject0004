@@ -1,3 +1,4 @@
+using Restaurant.Domain.Common.Enums;
 using Restaurant.Domain.Common.Models;
 
 namespace Restaurant.Domain.Entities.Catalog
@@ -13,13 +14,13 @@ namespace Restaurant.Domain.Entities.Catalog
 
         public RestaurantTable() { }
 
-        public RestaurantTable(int tableNumber, int floorNumber, int capacity, string shape, string status, string? description = "")
+        public RestaurantTable(int tableNumber, int floorNumber, int capacity, string shape, string? description = "")
         {
             TableNumber = tableNumber;
             FloorNumber = floorNumber;
             Capacity = capacity;
             Shape = shape;
-            Status = status;
+            Status = nameof(TableStatus.Available);
             Description = description;
         }
 

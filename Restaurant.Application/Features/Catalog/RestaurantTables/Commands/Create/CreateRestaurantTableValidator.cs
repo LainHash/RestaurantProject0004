@@ -19,9 +19,9 @@ namespace Restaurant.Application.Features.Catalog.RestaurantTables.Commands.Crea
                 .NotEmpty().WithMessage("Hình dạng bàn không được để trống.")
                 .MaximumLength(50).WithMessage("Hình dạng bàn chỉ có tối đa 50 ký tự.");
 
-            RuleFor(v => v.CreateRestaurantTableDTO.Status)
-                .NotEmpty().WithMessage("Trạng thái bàn không được để trống.")
-                .MaximumLength(50).WithMessage("Trạng thái bàn chỉ có tối đa 50 ký tự.");
+            //RuleFor(v => v.CreateRestaurantTableDTO.Status)
+            //    .NotEmpty().WithMessage("Trạng thái bàn không được để trống.")
+            //    .MaximumLength(50).WithMessage("Trạng thái bàn chỉ có tối đa 50 ký tự.");
 
             RuleFor(v => v.CreateRestaurantTableDTO.Description)
                 .MaximumLength(500).WithMessage("Mô tả chỉ có tối đa 500 ký tự.");
