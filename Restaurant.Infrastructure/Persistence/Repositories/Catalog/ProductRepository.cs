@@ -61,7 +61,7 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                     .Fail("Tên Sản phẩm đã tồn tại.", HttpStatusCode.Conflict);
             }
 
-            var categoryId = await GetCategoryId(request.CategoryName);
+            var categoryId = await GetCategoryId(request.CategoryName, cancellationToken);
             if (categoryId is not int categoryIdValue)
             {
                 return Result<ProductDTO>
@@ -74,14 +74,14 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                 var product = new Product(request.Name, request.Description, request.IsMadeToOrder, categoryIdValue);
 
                 _context.Products.Add(product);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
 
                 var productStock = new ProductStock(request.Price, request.Unit, request.Quantity, product.Id);
 
                 _context.ProductStocks.Add(productStock);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
 
-                await transaction.CommitAsync();
+                await transaction.CommitAsync(cancellationToken);
 
                 var dto = new ProductDTO(product);
 
@@ -90,18 +90,102 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
             }
             catch
             {
-                await transaction.RollbackAsync();
+                await transaction.RollbackAsync(cancellationToken);
                 throw;
             }
         }
 
-        private async Task<int?> GetCategoryId(string name)
+        public async Task<Result<ProductDTO>> 
+            UpdateAsync(Guid id, UpdateProductDTO request, CancellationToken cancellationToken)
+        {
+            var categoryId = await GetCategoryId(request.CategoryName, cancellationToken);
+            if (categoryId is not int categoryIdValue)
+            {
+                return Result<ProductDTO>
+                    .Fail("Tên Danh mục không tồn tại.", HttpStatusCode.NotFound);
+            }
+
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductStock)
+                .Where(p => p.PublicId == id)
+                .FirstOrDefaultAsync(cancellationToken);
+            if(product == null)
+            {
+                return Result<ProductDTO>
+                    .Fail("Sản phẩm không tồn tại.", HttpStatusCode.NotFound);
+            }
+
+            product.Update(request.Name, request.Description, request.IsAvailable, request.IsMadeToOrder, categoryIdValue);
+
+            product.ProductStock.Update(request.Price, request.Unit, request.Quantity);
+
+            await _context.SaveChangesAsync();
+
+            var dto = new ProductDTO(product);
+
+            return Result<ProductDTO>
+                .Success(dto, "Cập nhật Sản phẩm thành công.", HttpStatusCode.OK);
+        }
+
+        public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var product = await _context.Products
+                .Where(p => p.PublicId == id)
+                .FirstOrDefaultAsync(cancellationToken);
+            if( product == null)
+            {
+                return Result
+                    .Fail("Sản phẩm không tồn tại.", HttpStatusCode.NotFound);
+            }
+            if (product.IsDeleted)
+            {
+                return Result
+                    .Fail("Sản phẩm đã bị xóa trước đó.", HttpStatusCode.Conflict);
+            }
+
+            product.Delete();
+
+            await _context.SaveChangesAsync();
+
+            return Result
+                .Success("Xóa Sản phẩm thành công.", HttpStatusCode.OK);
+            
+        }
+
+        public async Task<Result> RestoreAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var product = await _context.Products
+                .Where(p => p.PublicId == id)
+                .FirstOrDefaultAsync(cancellationToken);
+            if (product == null)
+            {
+                return Result
+                    .Fail("Sản phẩm không tồn tại.", HttpStatusCode.NotFound);
+            }
+            if (!product.IsDeleted)
+            {
+                return Result
+                    .Fail("Sản phẩm chưa bị xóa.", HttpStatusCode.Conflict);
+            }
+
+            product.Restore();
+
+            await _context.SaveChangesAsync();
+
+            return Result
+                .Success("Khôi phục Sản phẩm thành công.", HttpStatusCode.OK);
+        }
+
+        private async Task<int?> GetCategoryId(string name, CancellationToken cancellationToken)
         {
             var category = await _context.Categories
                 .Where(c => c.Name == name)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
 
             return category?.Id;
         }
+
+        
     }
 }

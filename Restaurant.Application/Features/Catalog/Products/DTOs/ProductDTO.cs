@@ -1,9 +1,9 @@
-﻿using Restaurant.Domain.Common.Models;
+﻿using Restaurant.Application.Common.Models;
 using Restaurant.Domain.Entities.Catalog;
 
 namespace Restaurant.Application.Features.Catalog.Products.DTOs
 {
-    public class ProductDTO : SoftDeleteEntity
+    public class ProductDTO : SoftDeleteDTO
     {
         public string Name { get; set; } = null!;
         public string? Description { get; set; } = string.Empty;

@@ -38,7 +38,7 @@ namespace Restaurant.Infrastructure.Persistence.Seeders.Catalog
 
                 foreach (var record in records)
                 {
-                    context.Products.Add(new Product
+                    context.Products.Add(new Product()
                     {
                         Id = record.Id,
                         Name = record.Name,
