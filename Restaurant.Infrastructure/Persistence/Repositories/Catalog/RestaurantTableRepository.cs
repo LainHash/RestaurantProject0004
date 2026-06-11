@@ -18,16 +18,9 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
             GetAllAsync(CancellationToken cancellationToken)
         {
             var tables = await _context.RestaurantTables
-                .Select(t => new RestaurantTableDTO
-                {
-                    TableNumber = t.TableNumber,
-                    FloorNumber = t.FloorNumber,
-                    Shape = t.Shape,
-                    Capacity = t.Capacity,
-                    Status = t.Status,
-                    Description = t.Description ?? string.Empty,
-                })
+                .Select(tb => new RestaurantTableDTO(tb))
                 .ToListAsync(cancellationToken);
+
             return Result<List<RestaurantTableDTO>>
                 .Success(tables, "Lấy danh sách Bàn thành công.");
         }
@@ -37,15 +30,7 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
         {
             var tables = await _context.RestaurantTables
                 .Where(t => t.FloorNumber == floor)
-                .Select(t => new RestaurantTableDTO
-                {
-                    TableNumber = t.TableNumber,
-                    FloorNumber = t.FloorNumber,
-                    Shape = t.Shape,
-                    Capacity = t.Capacity,
-                    Status = t.Status,
-                    Description = t.Description ?? string.Empty,
-                })
+                .Select(tb => new RestaurantTableDTO(tb))
                 .ToListAsync(cancellationToken);
 
             return Result<List<RestaurantTableDTO>>
@@ -57,15 +42,7 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
         {
             var table = await _context.RestaurantTables
                 .Where(t => t.FloorNumber == floor && t.TableNumber == number)
-                .Select(t => new RestaurantTableDTO
-                {
-                    TableNumber = t.TableNumber,
-                    FloorNumber = t.FloorNumber,
-                    Shape = t.Shape,
-                    Capacity = t.Capacity,
-                    Status = t.Status,
-                    Description = t.Description ?? string.Empty,
-                })
+                .Select(tb => new RestaurantTableDTO(tb))
                 .FirstOrDefaultAsync(cancellationToken);
 
             if(table == null)

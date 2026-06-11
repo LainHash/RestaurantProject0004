@@ -10,5 +10,15 @@ namespace Restaurant.Domain.Entities.Catalog
         public string Shape { get; set; } = null!;
         public string Status { get; set; } = null!;
         public string? Description { get; set; } = string.Empty;
+
+        public RestaurantTable(int tableNumber, int floorNumber, int capacity, string shape, string status, string? description = "")
+        {
+            TableNumber = tableNumber;
+            FloorNumber = floorNumber;
+            Capacity = capacity;
+            Shape = shape;
+            Status = status;
+            Description = description;
+        }
     }
 }

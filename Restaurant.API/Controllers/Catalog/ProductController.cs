@@ -19,14 +19,14 @@ namespace Restaurant.API.Controllers.Catalog
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _mediator.Send(new GetAllQuery());
+            var result = await _mediator.Send(new GetAllProductsQuery());
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet("id")]
         public async Task<IActionResult> GetOne([FromRoute] Guid id)
         {
-            var result = await _mediator.Send(new GetOneQuery(id));
+            var result = await _mediator.Send(new GetOneProductQuery(id));
             return StatusCode(result.StatusCode, result);
         }
     }

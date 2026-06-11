@@ -22,7 +22,7 @@ namespace Restaurant.API.Controllers.Catalog
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _mediator.Send(new GetAllQuery());
+            var result = await _mediator.Send(new GetAllCategoriesQuery());
             return StatusCode(result.StatusCode, result);
         }
 

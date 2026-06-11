@@ -5,15 +5,15 @@ using Restaurant.Application.Interfaces.Repositories.Catalog;
 
 namespace Restaurant.Application.Features.Catalog.RestaurantTables.Queries.GetOneByNumber
 {
-    public class GetOneByNumberHandler : IRequestHandler<GetOneByNumberQuery, Result<RestaurantTableDTO>>
+    public class GetOneTableByNumberHandler : IRequestHandler<GetOneTableByNumberQuery, Result<RestaurantTableDTO>>
     {
         private readonly IRestaurantTableRepository _restaurantTableRepository;
-        public GetOneByNumberHandler(IRestaurantTableRepository restaurantTableRepository)
+        public GetOneTableByNumberHandler(IRestaurantTableRepository restaurantTableRepository)
         {
             _restaurantTableRepository = restaurantTableRepository;
         }
 
-        public async Task<Result<RestaurantTableDTO>> Handle(GetOneByNumberQuery request, CancellationToken cancellationToken)
+        public async Task<Result<RestaurantTableDTO>> Handle(GetOneTableByNumberQuery request, CancellationToken cancellationToken)
         {
             var response = await _restaurantTableRepository
                 .GetOneByNumberAsync(request.Floor, request.Number, cancellationToken);

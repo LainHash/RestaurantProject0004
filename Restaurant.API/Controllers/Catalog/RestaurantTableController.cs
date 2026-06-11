@@ -20,21 +20,21 @@ namespace Restaurant.API.Controllers.Catalog
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _mediator.Send(new GetAllQuery());
+            var result = await _mediator.Send(new GetAllTablesQuery());
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet("{floor}")]
         public async Task<IActionResult> Get([FromRoute] int floor)
         {
-            var result = await _mediator.Send(new GetAllByFloorQuery(floor));
+            var result = await _mediator.Send(new GetAllTablesByFloorQuery(floor));
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpGet("{floor}/{number}")]
         public async Task<IActionResult> GetOneByNumber(int floor, int number)
         {
-            var result = await _mediator.Send(new GetOneByNumberQuery(floor, number));
+            var result = await _mediator.Send(new GetOneTableByNumberQuery(floor, number));
             return StatusCode(result.StatusCode, result);
         }
     }
