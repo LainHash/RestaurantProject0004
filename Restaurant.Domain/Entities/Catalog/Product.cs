@@ -5,7 +5,6 @@ namespace Restaurant.Domain.Entities.Catalog
 {
     public class Product : SoftDeleteEntity
     {
-        public Guid PublicId { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; } = string.Empty;
         public bool IsAvailable { get; set; }

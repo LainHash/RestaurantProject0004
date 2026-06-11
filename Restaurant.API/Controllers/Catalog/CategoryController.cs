@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Restaurant.Application.Features.Catalog.Categories.Commands.CreateCategory;
+using Restaurant.Application.Features.Catalog.Categories.Commands.Create;
+using Restaurant.Application.Features.Catalog.Categories.Commands.Delete;
+using Restaurant.Application.Features.Catalog.Categories.Commands.Restore;
+using Restaurant.Application.Features.Catalog.Categories.Commands.Update;
 using Restaurant.Application.Features.Catalog.Categories.DTOs;
 using Restaurant.Application.Features.Catalog.Categories.Queries.GetAll;
 
@@ -27,6 +30,27 @@ namespace Restaurant.API.Controllers.Catalog
         public async Task<IActionResult> Create([FromBody] CreateCategoryDTO createCategoryDTO)
         {
             var result = await _mediator.Send(new CreateCategoryCommand(createCategoryDTO));
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id,[FromBody] UpdateCategoryDTO updateCategoryDTO)
+        {
+            var result = await _mediator.Send(new UpdateCategoryCommand(id, updateCategoryDTO));
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var result = await _mediator.Send(new DeleteCategoryCommand(id));
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("{id}/restore")]
+        public async Task<IActionResult> Restore([FromRoute] Guid id)
+        {
+            var result = await _mediator.Send(new RestoreCategoryCommand(id));
             return StatusCode(result.StatusCode, result);
         }
     }

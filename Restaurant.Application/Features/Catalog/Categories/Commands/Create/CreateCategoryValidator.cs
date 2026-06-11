@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Restaurant.Application.Features.Catalog.Categories.Commands.CreateCategory;
+namespace Restaurant.Application.Features.Catalog.Categories.Commands.Create;
 
 public class CreateCategoryValidator : AbstractValidator<CreateCategoryCommand>
 {
