@@ -1,5 +1,6 @@
 ﻿using Restaurant.Domain.Common.Models;
 using Restaurant.Domain.Entities.Inventory;
+using Restaurant.Domain.Entities.Misc;
 
 namespace Restaurant.Domain.Entities.Catalog
 {
@@ -14,6 +15,8 @@ namespace Restaurant.Domain.Entities.Catalog
 
         public virtual Category Category { get; set; } = null!;
         public virtual ProductStock ProductStock { get; set; } = null!;
+        public virtual IEnumerable<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
+
 
         public Product()
         {
