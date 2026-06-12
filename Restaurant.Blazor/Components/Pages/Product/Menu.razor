@@ -1,12 +1,58 @@
 @page "/Menu"
 @layout MainLayout
 
+@using Restaurant.Blazor.DTOs.Catalog.Products
+@using Restaurant.Blazor.DTOs.Catalog.Categoies
+@using Restaurant.Blazor.Services.Interfaces.Catalog
+@using Restaurant.Blazor.Common.Models
+@inject IProductApiService ProductService
+@inject ICategoryApiService CategoryService
+
 <PageTitle>Burger King - Thực Đơn</PageTitle>
 
 <PageHeader Title="Food Menu" />
 
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger mx-3" role="alert">
+        @errorMessage
+    </div>
+}
 
-<_CategorySelection />
+<_CategorySelection Categories="@categories" IsLoading="@isLoading"/>
 
+<_ProductGrid Products="@products" Categories="@categories" IsLoading="@isLoading"/>
 
-<_ProductGrid />
+@code {
+    private List<ProductVM> products = new();
+    private List<CategoryVM> categories = new();
+    private bool isLoading = true;
+    private ProductQuery query = new();
+
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        try
+        {
+            // Chạy song song 2 API call thay vì tuần tự → giảm thời gian chờ
+            var categoriesTask = CategoryService.GetCategoiesAsync();
+            var productsTask  = ProductService.GetProductsAsync(query);
+
+            await Task.WhenAll(categoriesTask, productsTask);
+
+            categories = categoriesTask.Result;
+            products   = productsTask.Result;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Không thể tải danh sách sản phẩm. Vui lòng thử lại sau. ({ex.Message})";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
+

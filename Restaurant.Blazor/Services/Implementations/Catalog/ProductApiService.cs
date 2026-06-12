@@ -1,4 +1,5 @@
-﻿using Restaurant.Blazor.Common.Models;
+﻿using Restaurant.Blazor.Common.Extensions;
+using Restaurant.Blazor.Common.Models;
 using Restaurant.Blazor.DTOs.Catalog.Products;
 using Restaurant.Blazor.Services.Interfaces;
 using Restaurant.Blazor.Services.Interfaces.Catalog;
@@ -13,13 +14,13 @@ namespace Restaurant.Blazor.Services.Implementations.Catalog
             _apiService = apiService;
         }
 
-        public async Task<List<ProductVM>> GetProductsAsync(CancellationToken cancellation)
+        public async Task<List<ProductVM>> GetProductsAsync(ProductQuery query)
         {
-            var result = await _apiService.GetAsync<ApiResponse<List<ProductVM>>>("api/product");
+            var result = await _apiService.GetAsync<ApiResponse<List<ProductVM>>>("api/product".AddQueryFrom(query));
             return result?.IsSuccess == true ? result.Data ?? new() : new();
         }
 
-        public async Task<ProductVM?> GetProductByPublicIdAsync(Guid id, CancellationToken cancellation)
+        public async Task<ProductVM?> GetProductByPublicIdAsync(Guid id)
         {
             var result = await _apiService.GetAsync<ApiResponse<ProductVM>>($"api/product/{id}");
             return result?.IsSuccess == true ? result.Data : null;

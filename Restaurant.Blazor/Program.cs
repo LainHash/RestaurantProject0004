@@ -13,6 +13,7 @@ builder.Services.AddRazorComponents()
 // Service Scoped
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<IProductApiService, ProductApiService>();
+builder.Services.AddScoped<ICategoryApiService, CategoryApiService>();
 
 // Configure HttpClient
 builder.Services.AddHttpClient("WebAPI", client =>

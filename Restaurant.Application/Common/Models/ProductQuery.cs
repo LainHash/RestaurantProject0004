@@ -6,7 +6,7 @@ namespace Restaurant.Application.Common.Models
     {
         public string? Keyword { get; set; }
 
-        public string? CategoryName { get; set; }
+        public string? CategoryId { get; set; }
 
         public string? SortBy { get; set; } = nameof(SortType.CreateAtDesc);
 

@@ -33,9 +33,9 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                 list = list.Where(p => p.Name.Contains(query.Keyword));
             }
 
-            if (!string.IsNullOrEmpty(query.CategoryName))
+            if (query.CategoryId != null)
             {
-                list = list.Where(p => p.Category.Name == query.CategoryName);
+                list = list.Where(p => p.Category.PublicId == Guid.Parse(query.CategoryId));
             }
 
             if (!string.IsNullOrEmpty(query.SortBy))

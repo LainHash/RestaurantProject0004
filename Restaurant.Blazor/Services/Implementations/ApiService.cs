@@ -7,9 +7,9 @@ namespace Restaurant.Blazor.Services.Implementations
     public class ApiService : IApiService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger _logger;
+        private readonly ILogger<ApiService> _logger;
 
-        public ApiService(IHttpClientFactory httpClientFactory, ILogger logger)
+        public ApiService(IHttpClientFactory httpClientFactory, ILogger<ApiService> logger)
         {
             _httpClient = httpClientFactory.CreateClient("WebAPI");
             _logger = logger;
