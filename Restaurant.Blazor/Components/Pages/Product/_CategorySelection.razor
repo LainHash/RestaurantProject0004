@@ -22,12 +22,15 @@
             {
                 @foreach (var category in Categories.Take(3))
                 {
+                    var isActive = SelectedCategoryId == category.PublicId.ToString();
                     <div class="col-md-4">
-                        <div class="food-item">
+                        <div class="food-item"
+                             style="cursor: pointer"
+                             role="button"
+                             @onclick="() => OnCategorySelected.InvokeAsync(isActive ? null : category.PublicId.ToString())">
                             <i class="@category.Name.GetIcon()"></i>
                             <h2>@category.Name</h2>
                             <p>@category.Description</p>
-                            <a href="/Menu">View Menu</a>
                         </div>
                     </div>
                 }
@@ -36,11 +39,18 @@
     </div>
 </div>
 <!-- Food Category End -->
-
 @code {
     [Parameter, EditorRequired]
     public List<CategoryVM> Categories { get; set; } = new();
 
     [Parameter]
     public bool IsLoading { get; set; }
+
+    /// <summary>CategoryId được chọn (null = "Tất cả").</summary>
+    [Parameter]
+    public string? SelectedCategoryId { get; set; }
+
+    /// <summary>Callback truyền CategoryId lên Menu.razor để gọi API.</summary>
+    [Parameter]
+    public EventCallback<string?> OnCategorySelected { get; set; }
 }

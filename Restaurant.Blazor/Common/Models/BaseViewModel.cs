@@ -2,7 +2,7 @@
 {
     public class BaseViewModel
     {
-        public Guid PulbicId { get; set; }
+        public Guid PublicId { get; set; }
     }
 
     public class AuditableVM : BaseViewModel

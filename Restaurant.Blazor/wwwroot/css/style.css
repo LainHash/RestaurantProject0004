@@ -565,10 +565,15 @@ a:focus {
     border-radius: 15px;
     box-shadow: 0 0 30px rgba(0, 0, 0, .08);
     transition: .3s;
+    cursor: pointer;
+    user-select: none;
 }
 
-.food .food-item:hover {
+.food .food-item:hover,
+.food .food-item.active {
     box-shadow: none;
+    background: #f9f9f9;
+    outline: 2px solid #fbaf32;
 }
 
 .food .food-item i {
@@ -885,6 +890,7 @@ a:focus {
     background: #fbaf32;
     border-radius: 5px;
     margin: 0 5px;
+    cursor: pointer;
 }
 
 .menu .menu-tab .nav.nav-pills .nav-link:hover,

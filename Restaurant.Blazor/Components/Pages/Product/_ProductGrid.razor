@@ -1,7 +1,8 @@
-﻿@using Restaurant.Blazor.DTOs.Catalog.Categoies
+@using Restaurant.Blazor.DTOs.Catalog.Categoies
 @using Restaurant.Blazor.DTOs.Catalog.Products
+
 <!-- Menu Start -->
-<div class="menu">
+<div id="product-grid" class="menu">
     <div class="container">
         <div class="section-header text-center">
             <p>Food Menu</p>
@@ -9,32 +10,59 @@
         </div>
         <div class="menu-tab">
             <ul class="nav nav-pills justify-content-center">
+                <!-- Tab "Tất cả" để reset filter -->
+                <li class="nav-item">
+                    <a class="nav-link @(SelectedCategoryId == null ? "active" : "")"
+                       style="cursor: pointer"
+                       role="button" @onclick="() => OnCategorySelected.InvokeAsync(null)">
+                        Tất cả
+                    </a>
+                </li>
                 @foreach (var cat in Categories)
                 {
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="pill">@cat.Name</a>
+                        <a class="nav-link @(SelectedCategoryId == cat.PublicId.ToString() ? "active" : "")"
+                           style="cursor: pointer"
+                           role="button"
+                           @onclick="() => OnCategorySelected.InvokeAsync(cat.PublicId.ToString())">
+                            @cat.Name
+                        </a>
                     </li>
                 }
             </ul>
             <div class="container tab-pane">
-                <div class="row">
-                    <div class="col-lg-7 col-md-12">
-                        @foreach (var item in Products)
-                        {
-                            <div class="menu-item">
-                                <div class="menu-img"><img src="@item.PrimaryImage" alt="Image"></div>
-                                <div class="menu-text">
-                                    <h3><span>@item.Name</span> <strong>@item.Price.ToString("N0")</strong></h3>
-                                    <p>@item.Description</p>
+                @if (IsLoading)
+                {
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                    </div>
+                }
+                else if (!Products.Any())
+                {
+                    <p class="text-center text-muted py-4">Không có sản phẩm nào.</p>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-lg-7 col-md-12">
+                            @foreach (var item in Products)
+                            {
+                                <div class="menu-item">
+                                    <div class="menu-img"><img src="@item.PrimaryImage" alt="Image"></div>
+                                    <div class="menu-text">
+                                        <h3><span>@item.Name</span> <strong>@item.Price.ToString("N0")</strong></h3>
+                                        <p>@item.Description</p>
+                                    </div>
                                 </div>
-                            </div>
-                        }
-
+                            }
+                        </div>
+                        <div class="col-lg-5 d-none d-lg-block">
+                            <img src="img/menu-beverage-img.jpg" alt="Image">
+                        </div>
                     </div>
-                    <div class="col-lg-5 d-none d-lg-block">
-                        <img src="img/menu-beverage-img.jpg" alt="Image">
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </div>
@@ -43,9 +71,18 @@
 @code {
     [Parameter, EditorRequired]
     public List<ProductVM> Products { get; set; } = new();
+
     [Parameter, EditorRequired]
     public List<CategoryVM> Categories { get; set; } = new();
 
     [Parameter]
     public bool IsLoading { get; set; }
-}
+
+    /// <summary>CategoryId đang được lọc (null = Tất cả).</summary>
+    [Parameter]
+    public string? SelectedCategoryId { get; set; }
+
+    /// <summary>Callback truyền CategoryId lên Menu.razor để gọi API.</summary>
+    [Parameter]
+    public EventCallback<string?> OnCategorySelected { get; set; }
+}
