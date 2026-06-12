@@ -28,6 +28,7 @@ namespace Restaurant.Infrastructure.Services
             services.AddScoped<TableSeeder>();
             services.AddScoped<ProductSeeder>();
             services.AddScoped<ProductStockSeeder>();
+            services.AddScoped<ProductImageSeeder>();
             services.AddScoped<DatabaseSeeder>();
 
             // ── Repositories ─────────────────────────────────────────────────

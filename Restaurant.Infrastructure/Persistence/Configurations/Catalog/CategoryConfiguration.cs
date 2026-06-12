@@ -15,6 +15,10 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Catalog
             builder.Property(c => c.Id)
                 .UseIdentityColumn();
 
+            builder.Property(p => p.PublicId)
+                .IsRequired()
+                .HasDefaultValueSql("newid()");
+
             builder.Property(c => c.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -44,6 +48,10 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Catalog
             builder.HasIndex(c => c.Name)
                 .IsUnique()
                 .HasDatabaseName("IX_Categories_Name");
+
+            builder.HasIndex(p => p.PublicId)
+                .IsUnique()
+                .HasDatabaseName("IX_Categories_PublicId");
         }
     }
 }

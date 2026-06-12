@@ -54,6 +54,11 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<Guid>("PublicId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newid()");
+
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -64,6 +69,10 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique()
                         .HasDatabaseName("IX_Categories_Name");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Categories_PublicId");
 
                     b.ToTable("Categories", (string)null);
                 });
@@ -168,6 +177,11 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<Guid>("PublicId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newid()");
+
                     b.Property<string>("Shape")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -190,6 +204,10 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PublicId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Tables_PublicId");
+
                     b.HasIndex("FloorNumber", "TableNumber")
                         .IsUnique()
                         .HasDatabaseName("IX_RestaurantTables_Floor_Table");
@@ -211,6 +229,11 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("PublicId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newid()");
+
                     b.Property<decimal>("Quantity")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("decimal(18,2)")
@@ -227,7 +250,61 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_ProductStocks_ProductId");
 
+                    b.HasIndex("PublicId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ProductStocks_PublicId");
+
                     b.ToTable("ProductStocks", (string)null);
+                });
+
+            modelBuilder.Entity("Restaurant.Domain.Entities.Misc.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("sysdatetime()");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsPrimary")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PublicId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("newid()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("sysdatetime()");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ProductImages_ProductId_IsPrimary")
+                        .HasFilter("[IsPrimary] = 1");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ProductImages_PublicId");
+
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("Restaurant.Domain.Entities.Catalog.Product", b =>
@@ -252,6 +329,17 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Restaurant.Domain.Entities.Misc.ProductImage", b =>
+                {
+                    b.HasOne("Restaurant.Domain.Entities.Catalog.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Restaurant.Domain.Entities.Catalog.Category", b =>
                 {
                     b.Navigation("Products");
@@ -259,6 +347,8 @@ namespace Restaurant.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Restaurant.Domain.Entities.Catalog.Product", b =>
                 {
+                    b.Navigation("ProductImages");
+
                     b.Navigation("ProductStock")
                         .IsRequired();
                 });

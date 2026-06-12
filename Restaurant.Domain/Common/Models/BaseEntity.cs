@@ -3,6 +3,7 @@
     public class BaseEntity
     {
         public int Id { get; set; }
+        public Guid PublicId { get; set; }
     }
 
     public class AuditableEntity : BaseEntity

@@ -15,6 +15,10 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Inventory
             builder.Property(ps => ps.Id)
                 .UseIdentityColumn();
 
+            builder.Property(p => p.PublicId)
+                .IsRequired()
+                .HasDefaultValueSql("newid()");
+
             builder.Property(ps => ps.Price)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
@@ -41,6 +45,10 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Inventory
                 .WithOne(p => p.ProductStock)
                 .HasForeignKey<ProductStock>(ps => ps.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasIndex(p => p.PublicId)
+                .IsUnique()
+                .HasDatabaseName("IX_ProductStocks_PublicId");
         }
     }
 }

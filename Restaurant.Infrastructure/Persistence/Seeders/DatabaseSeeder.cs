@@ -25,6 +25,9 @@ namespace Restaurant.Infrastructure.Persistence.Seeders
             // Products depend on Categories; ProductStocks depend on Products
             await SeedAsync<ProductSeeder>(_context);
             await SeedAsync<ProductStockSeeder>(_context);
+
+            // ProductImages depend on Products
+            await SeedAsync<ProductImageSeeder>(_context);
         }
 
         private async Task SeedAsync<TSeeder>(RestaurantDbContext context) where TSeeder : IDataSeeder
