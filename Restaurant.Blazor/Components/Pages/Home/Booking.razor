@@ -1,5 +1,6 @@
 @page "/booking"
 @layout MainLayout
+@inject IJSRuntime JS
 
 <PageTitle>Burger King - Đặt Bàn</PageTitle>
 
@@ -181,3 +182,14 @@
     </div>
 </div>
 <!-- Menu Preview End -->
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("reinitPage");
+        }
+        catch { /* Ignore if JS is not ready */ }
+    }
+}

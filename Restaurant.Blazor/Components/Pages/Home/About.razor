@@ -1,5 +1,6 @@
 @page "/about"
 @layout MainLayout
+@inject IJSRuntime JS
 
 <PageTitle>Burger King - Về Chúng Tôi</PageTitle>
 
@@ -90,3 +91,14 @@
         </div>
     </div>
 </div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("reinitPage");
+        }
+        catch { /* Ignore if JS is not ready */ }
+    }
+}
