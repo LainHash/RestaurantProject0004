@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Application.Features.Catalog.Products.Queries.GetByPublicId;
 using Restaurant.Application.Features.Catalog.Products.Queries.GetAll;
 using Restaurant.Application.Features.Catalog.Products.DTOs;
 using Restaurant.Application.Features.Catalog.Products.Commands.Create;
 using Restaurant.Application.Features.Catalog.Products.Commands.Update;
+using Restaurant.Application.Features.Catalog.Products.Commands.ChangeImages;
 using Restaurant.Application.Features.Catalog.Products.Commands.Delete;
 using Restaurant.Application.Features.Catalog.Products.Commands.Restore;
 
@@ -45,6 +46,13 @@ namespace Restaurant.API.Controllers.Catalog
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateProductDTO updateProductDTO)
         {
             var result = await _mediator.Send(new UpdateProductCommand(id, updateProductDTO));
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("{id}/images")]
+        public async Task<IActionResult> ChangeImages([FromRoute] Guid id, [FromBody] ChangeImagesProductDTO changeImagesProductDTO)
+        {
+            var result = await _mediator.Send(new ChangeImagesProductCommand(id, changeImagesProductDTO));
             return StatusCode(result.StatusCode, result);
         }
 

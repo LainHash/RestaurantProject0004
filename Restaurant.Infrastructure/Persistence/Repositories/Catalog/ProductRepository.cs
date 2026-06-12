@@ -126,6 +126,7 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
             var product = await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductStock)
+                .Include(p => p.ProductImages)
                 .Where(p => p.PublicId == id)
                 .FirstOrDefaultAsync(cancellationToken);
             if(product == null)
@@ -140,13 +141,19 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
 
             await _context.SaveChangesAsync();
 
-            var dto = new ProductDTO(product);
+            var updated = await _context.Products
+                    .Include(p => p.Category)
+                    .Include(p => p.ProductStock)
+                    .Include(p => p.ProductImages)
+                    .Where(p => p.Id == product.Id)
+                    .FirstAsync(cancellationToken);
 
             return Result<ProductDTO>
-                .Success(dto, "Cập nhật Sản phẩm thành công.", HttpStatusCode.OK);
+                .Success(new ProductDTO(updated), "Cập nhật Sản phẩm thành công.", HttpStatusCode.OK);
         }
 
-        public async Task<Result> DeleteAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Result> 
+            DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
             var product = await _context.Products
                 .Where(p => p.PublicId == id)
@@ -171,7 +178,8 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
             
         }
 
-        public async Task<Result> RestoreAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Result> 
+            RestoreAsync(Guid id, CancellationToken cancellationToken)
         {
             var product = await _context.Products
                 .Where(p => p.PublicId == id)
@@ -193,6 +201,115 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
 
             return Result
                 .Success("Khôi phục Sản phẩm thành công.", HttpStatusCode.OK);
+        }
+
+        public async Task<Result<ProductDTO>>
+            ChangeImagesAsync(Guid id, ChangeImagesProductDTO request, CancellationToken cancellationToken)
+        {
+            var product = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.ProductStock)
+                .Include(p => p.ProductImages)
+                .Where(p => p.PublicId == id)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (product == null)
+            {
+                return Result<ProductDTO>
+                    .Fail("Sản phẩm không tồn tại.", HttpStatusCode.NotFound);
+            }
+
+            if (request.NewPrimaryImageUrl != null)
+            {
+                var existingUrls = product.ProductImages.Select(i => i.ImageUrl).ToHashSet();
+                var addingUrls = request.ImagesToAdd.ToHashSet();
+                bool isRemoving = request.ImagesToRemove.Contains(request.NewPrimaryImageUrl);
+
+                bool willExist = (existingUrls.Contains(request.NewPrimaryImageUrl) || addingUrls.Contains(request.NewPrimaryImageUrl))
+                                 && !isRemoving;
+
+                if (!willExist)
+                {
+                    return Result<ProductDTO>
+                        .Fail("URL ảnh primary không tồn tại trong danh sách ảnh của sản phẩm sau khi cập nhật.",
+                              HttpStatusCode.BadRequest);
+                }
+            }
+
+            using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+            try
+            {
+                var currentImages = product.ProductImages.ToList();
+
+                if (request.ImagesToRemove.Count > 0)
+                {
+                    var removeSet = request.ImagesToRemove.ToHashSet();
+                    var imagesToDelete = currentImages
+                        .Where(i => removeSet.Contains(i.ImageUrl))
+                        .ToList();
+
+                    if (imagesToDelete.Count > 0)
+                    {
+                        _context.ProductImages.RemoveRange(imagesToDelete);
+                        currentImages = currentImages.Except(imagesToDelete).ToList();
+                    }
+                }
+
+                if (request.ImagesToAdd.Count > 0)
+                {
+                    var existingUrls = currentImages.Select(i => i.ImageUrl).ToHashSet();
+                    var newImages = request.ImagesToAdd
+                        .Where(url => !existingUrls.Contains(url))
+                        .Select(url => new ProductImage(url, isPrimary: false, product.Id))
+                        .ToList();
+
+                    if (newImages.Count > 0)
+                    {
+                        _context.ProductImages.AddRange(newImages);
+                        currentImages.AddRange(newImages);
+                    }
+                }
+
+                if (request.NewPrimaryImageUrl != null)
+                {
+                    foreach (var img in currentImages.Where(i => i.IsPrimary))
+                    {
+                        img.IsPrimary = false;
+                    }
+                    var newPrimary = currentImages
+                        .FirstOrDefault(i => i.ImageUrl == request.NewPrimaryImageUrl);
+                    if (newPrimary != null)
+                    {
+                        newPrimary.IsPrimary = true;
+                    }
+                }
+                else
+                {
+                    bool hasPrimary = currentImages.Any(i => i.IsPrimary);
+                    if (!hasPrimary && currentImages.Count > 0)
+                    {
+                        currentImages[0].IsPrimary = true;
+                    }
+                }
+
+                await _context.SaveChangesAsync(cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+
+                var updated = await _context.Products
+                    .Include(p => p.Category)
+                    .Include(p => p.ProductStock)
+                    .Include(p => p.ProductImages)
+                    .Where(p => p.Id == product.Id)
+                    .FirstAsync(cancellationToken);
+
+                return Result<ProductDTO>
+                    .Success(new ProductDTO(updated), "Cập nhật ảnh sản phẩm thành công.", HttpStatusCode.OK);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
         }
 
         private async Task<int?> GetCategoryId(string name, CancellationToken cancellationToken)
