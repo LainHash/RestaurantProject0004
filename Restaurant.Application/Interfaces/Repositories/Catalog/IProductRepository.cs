@@ -5,7 +5,8 @@ namespace Restaurant.Application.Interfaces.Repositories.Catalog
 {
     public interface IProductRepository
     {
-        Task<Result<List<ProductDTO>>> GetAllAsync(CancellationToken cancellationToken);
+        Task<PageResult<List<ProductDTO>>> GetAllAsync(ProductQuery query,
+                                                CancellationToken cancellationToken);
 
         Task<Result<ProductDTO>> GetOneByPublicIdAsync(Guid id,
                                                     CancellationToken cancellationToken);

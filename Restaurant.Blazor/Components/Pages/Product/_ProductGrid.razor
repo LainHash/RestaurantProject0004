@@ -1,0 +1,51 @@
+﻿@using Restaurant.Blazor.DTOs.Catalog.Categoies
+@using Restaurant.Blazor.DTOs.Catalog.Products
+<!-- Menu Start -->
+<div class="menu">
+    <div class="container">
+        <div class="section-header text-center">
+            <p>Food Menu</p>
+            <h2>Delicious Food Menu</h2>
+        </div>
+        <div class="menu-tab">
+            <ul class="nav nav-pills justify-content-center">
+                @foreach (var cat in Categories)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="pill">@cat.Name</a>
+                    </li>
+                }
+            </ul>
+            <div class="container tab-pane">
+                <div class="row">
+                    <div class="col-lg-7 col-md-12">
+                        @foreach (var item in Products)
+                        {
+                            <div class="menu-item">
+                                <div class="menu-img"><img src="@item.PrimaryImage" alt="Image"></div>
+                                <div class="menu-text">
+                                    <h3><span>@item.Name</span> <strong>@item.Price.ToString("N0")</strong></h3>
+                                    <p>@item.Description</p>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col-lg-5 d-none d-lg-block">
+                        <img src="img/menu-beverage-img.jpg" alt="Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Menu End -->
+@code {
+    [Parameter, EditorRequired]
+    public List<ProductVM> Products { get; set; } = new();
+    [Parameter, EditorRequired]
+    public List<CategoryVM> Categories { get; set; } = new();
+
+    [Parameter]
+    public bool IsLoading { get; set; }
+}

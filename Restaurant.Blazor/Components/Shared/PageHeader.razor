@@ -1,0 +1,19 @@
+@* Shared Page Header component — Page header banner with breadcrumb *@
+
+<div class="page-header mb-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>@Title</h2>
+            </div>
+            <div class="col-12">
+                <a href="/">Home</a>
+                <a href="#">@Title</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "Page";
+}

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Restaurant.Application.Common.Enums;
 using Restaurant.Application.Common.Models;
 using Restaurant.Application.Features.Catalog.Products.DTOs;
 using Restaurant.Application.Interfaces.Repositories.Catalog;
@@ -18,18 +19,58 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
         }
 
 
-        public async Task<Result<List<ProductDTO>>>
-            GetAllAsync(CancellationToken cancellationToken)
+        public async Task<PageResult<List<ProductDTO>>>
+            GetAllAsync(ProductQuery query, CancellationToken cancellationToken)
         {
-            var products = await _context.Products
+            var list = _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductStock)
                 .Include(p => p.ProductImages)
-                .Select(pro => new ProductDTO(pro))
-                .ToListAsync(cancellationToken);
+                .AsQueryable();
 
-            return Result<List<ProductDTO>>
-                .Success(products, "Lấy danh sách Sản phẩm thành công.", HttpStatusCode.OK);
+            if (!string.IsNullOrEmpty(query.Keyword))
+            {
+                list = list.Where(p => p.Name.Contains(query.Keyword));
+            }
+
+            if (query.CategoryId != null)
+            {
+                list = list.Where(p => p.Category.PublicId == Guid.Parse(query.CategoryId));
+            }
+
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                switch (query.SortBy)
+                {
+                    case nameof(SortType.CreatedAtAsc):
+                        list = list.OrderBy(p => p.CreatedAt);
+                        break;
+                    case nameof(SortType.CreateAtDesc):
+                        list = list.OrderByDescending(p => p.CreatedAt);
+                        break;
+                    case nameof(SortType.NameAsc):
+                        list = list.OrderBy(p => p.Name);
+                        break;
+                    case nameof(SortType.NameDesc):
+                        list = list.OrderByDescending(p => p.Name);
+                        break;
+                    case nameof(SortType.PriceAsc):
+                        list = list.OrderBy(p => p.ProductStock.Price);
+                        break;
+                    case nameof(SortType.PriceDesc):
+                        list = list.OrderByDescending(p => p.ProductStock.Price);
+                        break;
+                }
+            }
+            var totalItems = await list.CountAsync();
+            var products = await list.Skip((query.Page - 1) * query.PageSize)
+                                  .Take(query.PageSize)
+                                  .Select(pro => new ProductDTO(pro))
+                                  .ToListAsync();
+
+
+            return PageResult<List<ProductDTO>>
+                .Success(products, "Lấy danh sách Sản phẩm thành công.", totalItems, query.Page, query.PageSize, HttpStatusCode.OK);
         }
 
         public async Task<Result<ProductDTO>>

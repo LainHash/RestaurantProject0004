@@ -1,10 +1,26 @@
 using Restaurant.Blazor.Components;
+using Restaurant.Blazor.Services.Implementations;
+using Restaurant.Blazor.Services.Implementations.Catalog;
+using Restaurant.Blazor.Services.Interfaces;
+using Restaurant.Blazor.Services.Interfaces.Catalog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Service Scoped
+builder.Services.AddScoped<IApiService, ApiService>();
+builder.Services.AddScoped<IProductApiService, ProductApiService>();
+builder.Services.AddScoped<ICategoryApiService, CategoryApiService>();
+
+// Configure HttpClient
+builder.Services.AddHttpClient("WebAPI", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["WebAPI:BaseUrl"] ?? "https://localhost:7100");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
 
 var app = builder.Build();
 
