@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Behaviors\" />
     <Folder Include="Common\Constants\" />
-    <Folder Include="Common\Enums\" />
     <Folder Include="Features\Catalog\RestaurantTables\Commands\Create\" />
     <Folder Include="Features\Catalog\RestaurantTables\Commands\Delete\" />
     <Folder Include="Features\Catalog\RestaurantTables\Commands\Restore\" />

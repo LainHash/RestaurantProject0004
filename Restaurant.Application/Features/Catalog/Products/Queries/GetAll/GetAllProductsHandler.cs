@@ -5,17 +5,17 @@ using Restaurant.Application.Interfaces.Repositories.Catalog;
 
 namespace Restaurant.Application.Features.Catalog.Products.Queries.GetAll
 {
-    public class GetAllProductsHandler : IRequestHandler<GetAllProductsQuery, Result<List<ProductDTO>>>
+    public class GetAllProductsHandler : IRequestHandler<GetAllProductsQuery, PageResult<List<ProductDTO>>>
     {
         private readonly IProductRepository _productRepository;
         public GetAllProductsHandler(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
-        public async Task<Result<List<ProductDTO>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<PageResult<List<ProductDTO>>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
             var response = await _productRepository
-                .GetAllAsync(cancellationToken);
+                .GetAllAsync(request.Query, cancellationToken);
             return response;
         }
     }

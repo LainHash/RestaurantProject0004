@@ -8,6 +8,7 @@ using Restaurant.Application.Features.Catalog.Products.Commands.Update;
 using Restaurant.Application.Features.Catalog.Products.Commands.ChangeImages;
 using Restaurant.Application.Features.Catalog.Products.Commands.Delete;
 using Restaurant.Application.Features.Catalog.Products.Commands.Restore;
+using Restaurant.Application.Common.Models;
 
 namespace Restaurant.API.Controllers.Catalog
 {
@@ -22,9 +23,9 @@ namespace Restaurant.API.Controllers.Catalog
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] ProductQuery query)
         {
-            var result = await _mediator.Send(new GetAllProductsQuery());
+            var result = await _mediator.Send(new GetAllProductsQuery(query));
             return StatusCode(result.StatusCode, result);
         }
 

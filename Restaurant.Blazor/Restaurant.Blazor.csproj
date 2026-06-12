@@ -10,4 +10,10 @@
     <ProjectReference Include="..\Restaurant.Application\Restaurant.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\" />
+    <Folder Include="Common\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
