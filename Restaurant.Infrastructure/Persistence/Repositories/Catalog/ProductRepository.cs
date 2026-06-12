@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Restaurant.Application.Common.Models;
 using Restaurant.Application.Features.Catalog.Products.DTOs;
 using Restaurant.Application.Interfaces.Repositories.Catalog;
 using Restaurant.Domain.Entities.Catalog;
 using Restaurant.Domain.Entities.Inventory;
-using System.ComponentModel;
+using Restaurant.Domain.Entities.Misc;
 using System.Net;
 
 namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
@@ -24,6 +24,7 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
             var products = await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductStock)
+                .Include(p => p.ProductImages)
                 .Select(pro => new ProductDTO(pro))
                 .ToListAsync(cancellationToken);
 
@@ -37,6 +38,7 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
             var product = await _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductStock)
+                .Include(p => p.ProductImages)
                 .Where(p => p.PublicId == id)
                 .Select(pro => new ProductDTO(pro))
                 .FirstOrDefaultAsync(cancellationToken);
@@ -74,19 +76,35 @@ namespace Restaurant.Infrastructure.Persistence.Repositories.Catalog
                 var product = new Product(request.Name, request.Description, request.IsMadeToOrder, categoryIdValue);
 
                 _context.Products.Add(product);
+
                 await _context.SaveChangesAsync(cancellationToken);
 
                 var productStock = new ProductStock(request.Price, request.Unit, request.Quantity, product.Id);
 
                 _context.ProductStocks.Add(productStock);
+
+                if (request.Images.Count > 0)
+                {
+                    var productImages = request.Images
+                        .Select((url, index) => new ProductImage(url, isPrimary: index == 0, product.Id))
+                        .ToList();
+
+                    _context.ProductImages.AddRange(productImages);
+                }
+
                 await _context.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
 
-                var dto = new ProductDTO(product);
+                var created = await _context.Products
+                    .Include(p => p.Category)
+                    .Include(p => p.ProductStock)
+                    .Include(p => p.ProductImages)
+                    .Where(p => p.Id == product.Id)
+                    .FirstAsync(cancellationToken);
 
                 return Result<ProductDTO>
-                    .Success(dto, "Thêm sản phẩm thành công.", HttpStatusCode.Created);
+                    .Success(new ProductDTO(created), "Thêm sản phẩm thành công.", HttpStatusCode.Created);
             }
             catch
             {

@@ -1,4 +1,4 @@
-﻿namespace Restaurant.Application.Features.Catalog.Products.DTOs
+namespace Restaurant.Application.Features.Catalog.Products.DTOs
 {
     public class CreateProductDTO
     {
@@ -11,5 +11,8 @@
         public decimal Quantity { get; set; }
 
         public string CategoryName { get; set; } = null!;
+
+        public List<string> Images { get; set; } = new List<string>();
     }
 }
+
