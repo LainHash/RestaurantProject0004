@@ -2,7 +2,7 @@
 
 namespace Restaurant.Application.Common.Models
 {
-    public class PageResult<T> : Result<T> where T : class
+    public class PageResult<T> : Result<T> 
     {
         public int TotalItems { get; set; }
         public int Page { get; set; }

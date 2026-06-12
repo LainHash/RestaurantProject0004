@@ -45,7 +45,7 @@ namespace Restaurant.Application.Features.Catalog.Products.DTOs
         }
     }
 
-    public class ImageDTO
+    public class ImageDTO : AuditableDTO
     {
         public string ImageUrl { get; set; } = null!;
         public bool IsPrimary { get; set; }
