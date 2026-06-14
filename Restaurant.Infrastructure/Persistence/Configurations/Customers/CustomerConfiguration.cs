@@ -9,7 +9,7 @@ namespace Restaurant.Infrastructure.Persistence.Configurations.Customers
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            builder.ToTable("Users");
+            builder.ToTable("Customers");
 
             builder.HasKey(p => p.Id);
 
