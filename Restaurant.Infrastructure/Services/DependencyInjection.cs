@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Restaurant.Application.Interfaces.Repositories.Auth;
+using Restaurant.Application.Interfaces.Repositories;
 using Restaurant.Application.Interfaces.Repositories.Catalog;
+using Restaurant.Application.Interfaces.Services;
 using Restaurant.Infrastructure.Persistence;
-using Restaurant.Infrastructure.Persistence.Repositories.Auth;
 using Restaurant.Infrastructure.Persistence.Repositories.Catalog;
+using Restaurant.Infrastructure.Persistence.Repositories.Identity;
 using Restaurant.Infrastructure.Persistence.Seeders;
 using Restaurant.Infrastructure.Persistence.Seeders.Catalog;
 using Restaurant.Infrastructure.Persistence.Seeders.Customers;
@@ -46,7 +47,12 @@ namespace Restaurant.Infrastructure.Services
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IRestaurantTableRepository, RestaurantTableRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            // ── Authentication Services ──────────────────────────────────────
+            services.AddScoped<IPasswordHashService, PasswordHashService>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             return services;
         }
