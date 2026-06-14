@@ -20,20 +20,17 @@ namespace Restaurant.Domain.Entities.Catalog
         {
             Name = name;
             Description = description;
-            UpdatedAt = DateTime.UtcNow;
         }
 
         public void SoftDelete() 
         {
             IsDeleted = true;
-            UpdatedAt = DateTime.UtcNow;
             DeletedAt = DateTime.UtcNow;
         }
 
         public void Restore()
         {
             IsDeleted = false;
-            UpdatedAt = DateTime.UtcNow;
             DeletedAt = null;
         }
     }
