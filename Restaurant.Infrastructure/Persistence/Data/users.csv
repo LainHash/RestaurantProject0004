@@ -1,6 +1,6 @@
 Id,UserName,Email,PasswordHash,Status,PIId,RolerId
-1,admin,admin@restaurant.com,Admin@123456,Active,1,1
-2,manager,manager@restaurant.com,Manager@123456,Active,2,2
-3,staff,staff@restaurant.com,Staff@123456,Active,3,3
-4,customer1,customer1@restaurant.com,Customer@123456,Active,4,4
-5,customer2,customer2@restaurant.com,Customer@123456,Active,5,4
+1,admin,admin@restaurant.com,$2a$12$HrFGuEDmWx0v1AkEQUvs9.0BNZ1fdcPRY2PeDt.BwFl8HAPkcLEM6,Active,1,1
+2,manager,manager@restaurant.com,$2a$12$AyLK62IqIvQbStY7HRsiSuJ7QzjIhPRt5OxImHdrQC/295ZFNeVA6,Active,2,2
+3,staff,staff@restaurant.com,$2a$12$791gSfQN66YjUmgIQmpck.Up12ng7vjEyryJkEafWSuN8JE3WaPz2,Active,3,3
+4,customer1,customer1@restaurant.com,$2a$12$42WYRfMiy7rE1TYMvbDwpeZdDBmSW7uOjzeI6fYSlbg/5nH/QNnhG,Active,4,4
+5,customer2,customer2@restaurant.com,$2a$12$.3IcD8yZLMgGeCCh72gi.O7NKZ7I7b0ix8QtMzERM0P6GktqEL89a,Active,5,4
