@@ -1,0 +1,6 @@
+Id,FirstName,LastName,DOB,Gender,Country,City,Address,Phone,CitizenCardId
+1,Nguyen,Admin,1985-05-15,true,Vietnam,Da Nang,"123 Main Street",0901234567,001234567890
+2,Tran,Manager,1990-08-20,false,Vietnam,Ho Chi Minh,"456 Business Ave",0902345678,002345678901
+3,Le,Staff,1995-03-10,true,Vietnam,Ha Noi,"789 Work St",0903456789,003456789012
+4,Pham,Customer,2000-12-25,false,Vietnam,Da Nang,"321 Park Road",0904567890,004567890123
+5,Hoang,Customer2,1998-07-30,true,Vietnam,Ho Chi Minh,"654 Shop Street",0905678901,005678901234
