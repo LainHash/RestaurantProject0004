@@ -1,0 +1,5 @@
+Id,Name,Level,Description
+1,Admin,1,Administrator - Full access to all system features
+2,Manager,2,Manager - Can manage products, tables, and orders
+3,Staff,3,Staff - Can view orders and update status
+4,Customer,4,Customer - Regular customer accessing the restaurant system

@@ -121,3 +121,17 @@ window.reinitPage = function () {
         return false;
     });
 };
+
+// Smooth scroll đến element theo id, có offset để tránh bị navbar che
+window.scrollToElement = function (elementId, offsetPx) {
+    var offset = offsetPx || 80;
+    var $el = $('#' + elementId);
+    if ($el.length) {
+        $('html, body').animate(
+            { scrollTop: $el.offset().top - offset },
+            600,
+            'easeInOutExpo'
+        );
+    }
+};
+

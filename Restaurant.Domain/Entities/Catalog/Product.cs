@@ -39,20 +39,17 @@ namespace Restaurant.Domain.Entities.Catalog
             IsAvailable = IsAvailable;
             IsMadeToOrder = isMadeToOrder;
             CategoryId = categoryId;
-            UpdatedAt = DateTime.UtcNow;
         }
 
         public void Delete()
         {
             IsDeleted = true;
-            UpdatedAt = DateTime.UtcNow;
             DeletedAt = DateTime.UtcNow;
         }
 
         public void Restore()
         {
             IsDeleted = false;
-            UpdatedAt = DateTime.UtcNow;
             DeletedAt = null;
         }
     }

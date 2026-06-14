@@ -7,6 +7,7 @@
 @using Restaurant.Blazor.Common.Models
 @inject IProductApiService ProductService
 @inject ICategoryApiService CategoryService
+@inject IJSRuntime JS
 
 <PageTitle>Burger King - Thực Đơn</PageTitle>
 
@@ -19,9 +20,16 @@
     </div>
 }
 
-<_CategorySelection Categories="@categories" IsLoading="@isLoading"/>
+<_CategorySelection Categories="@categories"
+                    IsLoading="@isLoading"
+                    SelectedCategoryId="@query.CategoryId"
+                    OnCategorySelected="OnFilterChanged" />
 
-<_ProductGrid Products="@products" Categories="@categories" IsLoading="@isLoading"/>
+<_ProductGrid Products="@products"
+              Categories="@categories"
+              IsLoading="@isLoading"
+              SelectedCategoryId="@query.CategoryId"
+              OnCategorySelected="OnFilterChanged" />
 
 @code {
     private List<ProductVM> products = new();
@@ -38,7 +46,7 @@
         {
             // Chạy song song 2 API call thay vì tuần tự → giảm thời gian chờ
             var categoriesTask = CategoryService.GetCategoiesAsync();
-            var productsTask  = ProductService.GetProductsAsync(query);
+            var productsTask   = ProductService.GetProductsAsync(query);
 
             await Task.WhenAll(categoriesTask, productsTask);
 
@@ -54,5 +62,45 @@
             isLoading = false;
         }
     }
+
+    /// <summary>
+    /// Xử lý khi người dùng chọn / bỏ chọn category.
+    /// categoryId = null → xem tất cả.
+    /// </summary>
+    private async Task OnFilterChanged(string? categoryId)
+    {
+        // Nếu click lại category đang chọn → reset
+        query.CategoryId = categoryId;
+        query.Page = 1;
+
+        isLoading = true;
+        errorMessage = null;
+        StateHasChanged();          // cập nhật skeleton ngay lập tức
+
+        try
+        {
+            products = await ProductService.GetProductsAsync(query);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Không thể lọc sản phẩm. Vui lòng thử lại sau. ({ex.Message})";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+
+        // Scroll sau khi UI đã render xong — tách riêng để lỗi JS không ảnh hưởng filter
+        try
+        {
+            await Task.Delay(150); // chờ Blazor render lại DOM
+            await JS.InvokeVoidAsync("scrollToElement", "product-grid", 80);
+        }
+        catch
+        {
+            // Bỏ qua nếu JS chưa sẵn sàng
+        }
+    }
 }
+
 
