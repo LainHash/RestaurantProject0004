@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\Services\**" />
+    <EmbeddedResource Remove="Interfaces\Services\**" />
+    <None Remove="Interfaces\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="MediatR" Version="14.1.0" />
@@ -23,7 +29,6 @@
     <Folder Include="Features\Catalog\RestaurantTables\Commands\Delete\" />
     <Folder Include="Features\Catalog\RestaurantTables\Commands\Restore\" />
     <Folder Include="Features\Catalog\RestaurantTables\Commands\Update\" />
-    <Folder Include="Interfaces\Services\" />
   </ItemGroup>
 
 </Project>
