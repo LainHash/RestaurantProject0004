@@ -1,6 +1,6 @@
 Id,UserName,Email,PasswordHash,Status,PIId,RolerId
-1,admin,admin@restaurant.com,Admin@123456,Active,1,1
-2,manager,manager@restaurant.com,Manager@123456,Active,2,2
-3,staff,staff@restaurant.com,Staff@123456,Active,3,3
-4,customer1,customer1@restaurant.com,Customer@123456,Active,4,4
-5,customer2,customer2@restaurant.com,Customer@123456,Active,5,4
+1,admin,admin@restaurant.com,admin123,Active,1,1
+2,manager,manager@restaurant.com,manager123,Active,2,2
+3,staff,staff@restaurant.com,staff123,Active,3,3
+4,customer1,customer1@restaurant.com,customer123,Active,4,4
+5,customer2,customer2@restaurant.com,customer123,Active,5,4
